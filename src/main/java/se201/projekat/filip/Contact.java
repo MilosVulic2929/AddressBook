@@ -1,4 +1,6 @@
-package se201.projekat;
+package se201.projekat.filip;
+
+import se201.projekat.filip.Address;
 
 public class Contact {
 

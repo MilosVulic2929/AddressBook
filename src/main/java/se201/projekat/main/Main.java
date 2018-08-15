@@ -1,4 +1,4 @@
-package se201.projekat;
+package se201.projekat.main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
