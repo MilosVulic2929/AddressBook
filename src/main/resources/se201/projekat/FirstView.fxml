@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.introduction.FirstViewController">
+   <children>
+      <ImageView fx:id="imageView" fitHeight="274.0" fitWidth="282.0" layoutX="92.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@addressBook.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="createNewContactBtn" layoutX="449.0" layoutY="148.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="Create new contact" />
+      <Button fx:id="openAddressBookBtn" layoutX="449.0" layoutY="188.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="122.0" text="Open address book" />
+      <Button fx:id="checkAnalasistBtn" layoutX="450.0" layoutY="230.0" mnemonicParsing="false" text="Check the analasists" />
+   </children>
+</AnchorPane>
