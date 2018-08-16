@@ -4,16 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.RadioButton;
-import javafx.stage.Stage;
+import se201.projekat.pane_transitions.PaneTransition;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -76,16 +72,8 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleHome(ActionEvent actionEvent) {
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../FirstView.fxml"));
-            Scene scene = new Scene(root);
-            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            window.setScene(scene);
-            window.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        PaneTransition paneTransition = PaneTransition.getInstance();
+        paneTransition.transition(actionEvent,"../FirstView.fxml");
     }
 
     private void toggle(RadioButton first, RadioButton second) {
@@ -110,15 +98,7 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleMoreAnalysis(ActionEvent actionEvent) {
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../AdditionalAnalysis.fxml"));
-            Scene scene = new Scene(root);
-            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            window.setScene(scene);
-            window.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        PaneTransition paneTransition = PaneTransition.getInstance();
+        paneTransition.transition(actionEvent,"../AdditionalAnalysis.fxml");
     }
 }
