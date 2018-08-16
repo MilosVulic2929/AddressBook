@@ -46,7 +46,7 @@ public class AnalysisController implements Initializable {
     private void loadDataBarChartCountries() {
 
         XYChart.Series<String, Number> series = new XYChart.Series();
-        series.setName("2018");
+        series.setName("Countries");
         series.getData().add(new XYChart.Data("Item 1", 1800.58));
         series.getData().add(new XYChart.Data("Item 2", 4300.40));
         series.getData().add(new XYChart.Data("Item 3", 2500.50));
@@ -57,7 +57,7 @@ public class AnalysisController implements Initializable {
     private void loadDataBarChartContacts() {
 
         XYChart.Series<String, Number> series = new XYChart.Series();
-        series.setName("2018");
+        series.setName("Contact type");
         series.getData().add(new XYChart.Data("Item 1", 1800.58));
         series.getData().add(new XYChart.Data("Item 2", 4300.40));
         series.getData().add(new XYChart.Data("Item 3", 2500.50));
@@ -79,12 +79,10 @@ public class AnalysisController implements Initializable {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../FirstView.fxml"));
-            ((Node) actionEvent.getSource()).getScene().setRoot(root);
-            /*
             Scene scene = new Scene(root);
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
-            window.show();*/
+            window.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,5 +107,18 @@ public class AnalysisController implements Initializable {
         toggle(radioContactBtn, radioCountryBtn);
         barChart.getData().clear();
         loadDataBarChartContacts();
+    }
+
+    public void handleMoreAnalysis(ActionEvent actionEvent) {
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../AdditionalAnalysis.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

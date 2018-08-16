@@ -8,9 +8,9 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="806.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.controllers.AnalysisController">
+<AnchorPane prefHeight="808.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.controllers.AnalysisController">
    <children>
-      <BarChart fx:id="barChart" layoutX="50.0" layoutY="134.0" prefHeight="232.0" prefWidth="500.0" title="Statistics by country">
+      <BarChart fx:id="barChart" layoutX="50.0" layoutY="134.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="232.0" prefWidth="500.0" title="Statistics by country">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -20,9 +20,9 @@
       </BarChart>
       <RadioButton fx:id="radioCountryBtn" layoutX="158.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleCountryRadio" text="Country" />
       <RadioButton fx:id="radioContactBtn" layoutX="300.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleContactRadio" text=" Personal / Company contact" />
-      <PieChart fx:id="pieChartGender" layoutX="102.0" layoutY="377.0" prefHeight="339.0" prefWidth="420.0" title="Statistics by gender" />
+      <PieChart fx:id="pieChartGender" layoutX="102.0" layoutY="377.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="420.0" title="Statistics by gender" />
       <Button layoutX="123.0" layoutY="758.0" mnemonicParsing="false" onAction="#handleHome" prefHeight="25.0" prefWidth="89.0" text="Home" />
       <Button layoutX="256.0" layoutY="758.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="AdressBook" />
-      <Button layoutX="387.0" layoutY="758.0" mnemonicParsing="false" text="More analysis" />
+      <Button layoutX="387.0" layoutY="758.0" mnemonicParsing="false" onAction="#handleMoreAnalysis" text="More analysis" />
    </children>
 </AnchorPane>
