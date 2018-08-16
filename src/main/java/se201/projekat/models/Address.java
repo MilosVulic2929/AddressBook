@@ -1,4 +1,4 @@
-package se201.projekat.filip;
+package se201.projekat.models;
 
 public class Address {
 

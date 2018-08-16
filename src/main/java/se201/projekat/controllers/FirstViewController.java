@@ -1,4 +1,4 @@
-package se201.projekat.introduction;
+package se201.projekat.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;

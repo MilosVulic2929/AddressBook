@@ -1,4 +1,4 @@
-package se201.projekat.analysis;
+package se201.projekat.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
