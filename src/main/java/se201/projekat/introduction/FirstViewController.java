@@ -19,10 +19,20 @@ public class FirstViewController {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../AddingContact.fxml"));
+            ((Node) actionEvent.getSource()).getScene().setRoot(root);
+
+            /*
+                TODO INFO namenjen (Vulicu)
+                Ovo sam skratio posto kad se uzme scena to je ta vec postojeca ne mora se pravi nova i sve to
+                samo se zameni root na sceni i tolko,
+                ali ostavio sam ovaj kod ako treba duza verzija
+             */
+
+            /*
             Scene scene = new Scene(root);
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
-            window.show();
+            window.show();*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,10 +48,12 @@ public class FirstViewController {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../Analysis.fxml"));
+            ((Node) actionEvent.getSource()).getScene().setRoot(root);
+            /*
             Scene scene = new Scene(root);
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
-            window.show();
+            window.show();*/
         } catch (Exception e) {
             e.printStackTrace();
         }
