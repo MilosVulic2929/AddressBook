@@ -1,4 +1,4 @@
-package se201.projekat.analysis;
+package se201.projekat.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,7 +43,7 @@ public class AnalysisController implements Initializable {
         loadDataPieChartGender();
     }
 
-    public void loadDataBarChartCountries() {
+    private void loadDataBarChartCountries() {
 
         XYChart.Series<String, Number> series = new XYChart.Series();
         series.setName("2018");
@@ -54,7 +54,7 @@ public class AnalysisController implements Initializable {
         barChart.getData().add(series);
     }
 
-    public void loadDataBarChartContacts() {
+    private void loadDataBarChartContacts() {
 
         XYChart.Series<String, Number> series = new XYChart.Series();
         series.setName("2018");
@@ -64,7 +64,7 @@ public class AnalysisController implements Initializable {
         barChart.getData().add(series);
     }
 
-    public void loadDataPieChartGender() {
+    private void loadDataPieChartGender() {
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
                         new PieChart.Data("Companies", 30),
@@ -79,16 +79,18 @@ public class AnalysisController implements Initializable {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../FirstView.fxml"));
+            ((Node) actionEvent.getSource()).getScene().setRoot(root);
+            /*
             Scene scene = new Scene(root);
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
-            window.show();
+            window.show();*/
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void toggle(RadioButton first, RadioButton second) {
+    private void toggle(RadioButton first, RadioButton second) {
         first.setSelected(true);
         if (first.isSelected()) {
             second.setSelected(false);

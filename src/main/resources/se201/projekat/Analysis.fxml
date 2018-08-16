@@ -8,7 +8,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="806.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.analysis.AnalysisController">
+<AnchorPane prefHeight="806.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.controllers.AnalysisController">
    <children>
       <BarChart fx:id="barChart" layoutX="50.0" layoutY="134.0" prefHeight="232.0" prefWidth="500.0" title="Statistics by country">
         <xAxis>
