@@ -17,7 +17,7 @@ public class DB {
         return INSTANCE;
     }
     private static final String driver = "com.mysql.jdbc.Driver";
-    private static final String url = "jdbc:mysql://localhost:3306/nastavnik_to_predmet?createDatabaseIfNotExist=true";
+    private static final String url = "jdbc:mysql://localhost:3306/addressbook?createDatabaseIfNotExist=true";
     private static final String user= "root";
     private static final String password = "";
 
@@ -25,6 +25,10 @@ public class DB {
     private DB() {
         try {
             Class.forName(driver);
+            createTable(GROUP_TABLE_SQL);
+            createTable(CONTACT_TABLE_SQL);
+            createTable(PERSON_TABLE_SQL);
+            createTable(ADDRESS_TABLE_SQL);
         } catch (ClassNotFoundException ex) {
             System.err.println("Driver not found:" + ex.getMessage());
         }
@@ -35,5 +39,59 @@ public class DB {
         return DriverManager.getConnection(url, user, password);
     }
 
+    private void createTable(String sql){
+        try(Connection conn = connect()){
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+            stmt.close();
+        } catch (SQLException ex){
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    private static final String GROUP_TABLE_SQL = "create table `GROUP`\n" +
+            "(\n" +
+            "   GROUP_ID             int not null auto_increment,\n" +
+            "   GROUP_NAME           varchar(255) not null,\n" +
+            "   primary key (GROUP_ID)\n" +
+            ");";
+
+    private static final String CONTACT_TABLE_SQL = "create table CONTACT\n" +
+            "(\n" +
+            "   CONTACT_ID           int not null auto_increment,\n" +
+            "   GROUP_ID             int,\n" +
+            "   PHONE                varchar(255) not null,\n" +
+            "   EMAIL                varchar(255) not null,\n" +
+            "   CREATION_DATE        date not null,\n" +
+            "   primary key (CONTACT_ID),\n" +
+            "   FOREIGN KEY (GROUP_ID) REFERENCES `GROUP`(group_id)\n" +
+            "   on delete cascade on update cascade\n" +
+            ");";
+
+    private static final String PERSON_TABLE_SQL = "create table PERSON\n" +
+            "(\n" +
+            "   PERSON_ID            int not null auto_increment,\n" +
+            "   CONTACT_ID           int not null,\n" +
+            "   FIRSTNAME            varchar(255) not null,\n" +
+            "   LASTNAME             varchar(255) not null,\n" +
+            "   GENDER               ENUM('male', 'female', 'other') not null,\n" +
+            "   primary key (PERSON_ID),\n" +
+            "   FOREIGN KEY (CONTACT_ID) REFERENCES CONTACT(contact_id)\n" +
+            "   on delete cascade on update cascade\n" +
+            ");";
+
+    private static final String ADDRESS_TABLE_SQL = "create table ADDRESS\n" +
+            "(\n" +
+            "   ADDRESS_ID           int not null auto_increment,\n" +
+            "   CONTACT_ID           int not null,\n" +
+            "   CITY                 varchar(255) not null,\n" +
+            "   COUNTRY              varchar(255) not null,\n" +
+            "   STREET               varchar(255) not null,\n" +
+            "   NUMBER               varchar(255) not null,\n" +
+            "   \n" +
+            "   primary key (ADDRESS_ID),\n" +
+            "   FOREIGN KEY (CONTACT_ID) REFERENCES CONTACT(CONTACT_ID) \n" +
+            "   on delete cascade on update cascade\n" +
+            ");";
 
 }

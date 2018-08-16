@@ -48,6 +48,8 @@ public class FirstViewController {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../Analysis.fxml"));
+            Scene scene = ((Node) actionEvent.getSource()).getScene();
+            scene.getWindow().setHeight(800);
             ((Node) actionEvent.getSource()).getScene().setRoot(root);
             /*
             Scene scene = new Scene(root);
