@@ -21,7 +21,6 @@ public class FirstViewController {
             Parent root = FXMLLoader.load(getClass().getResource("../AddingContact.fxml"));
             Scene scene = new Scene(root);
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            window.setTitle("JavaFX and Maven");
             window.setScene(scene);
             window.show();
         } catch (Exception e) {
@@ -30,6 +29,9 @@ public class FirstViewController {
     }
 
     public void setOnOpenAddressBook(ActionEvent actionEvent) {
+
+        //TODO namenjen (Filipu)
+        // Ovde ti je tvoja akcija da otvoris adressBook window
     }
 
     public void setOnCheckTheAnalysis(ActionEvent actionEvent) {
@@ -38,7 +40,6 @@ public class FirstViewController {
             Parent root = FXMLLoader.load(getClass().getResource("../Analysis.fxml"));
             Scene scene = new Scene(root);
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            window.setTitle("JavaFX and Maven");
             window.setScene(scene);
             window.show();
         } catch (Exception e) {
