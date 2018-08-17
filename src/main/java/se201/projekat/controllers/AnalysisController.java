@@ -9,11 +9,12 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.RadioButton;
-import se201.projekat.pane_transitions.PaneTransition;
+import se201.projekat.utils.PaneTransition;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unchecked")
 public class AnalysisController implements Initializable {
 
     //TODO
@@ -72,8 +73,7 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleHome(ActionEvent actionEvent) {
-        PaneTransition paneTransition = PaneTransition.getInstance();
-        paneTransition.transition(actionEvent,"../FirstView.fxml");
+        PaneTransition.getInstance().transition(actionEvent,"../FirstView.fxml");
     }
 
     private void toggle(RadioButton first, RadioButton second) {
@@ -98,7 +98,6 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleMoreAnalysis(ActionEvent actionEvent) {
-        PaneTransition paneTransition = PaneTransition.getInstance();
-        paneTransition.transition(actionEvent,"../AdditionalAnalysis.fxml");
+        PaneTransition.getInstance().transition(actionEvent,"../AdditionalAnalysis.fxml");
     }
 }

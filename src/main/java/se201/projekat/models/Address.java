@@ -2,12 +2,22 @@ package se201.projekat.models;
 
 public class Address {
 
+    private int id;
     private String country;
     private String city;
     private String street;
     private String number;
 
     public Address(String country, String city, String street, String number) {
+        this.id = -1;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.number = number;
+    }
+
+    public Address(int id, String country, String city, String street, String number) {
+        this.id = id;
         this.country = country;
         this.city = city;
         this.street = street;
@@ -15,10 +25,19 @@ public class Address {
     }
 
     public Address(Address toCopy) {
+        this.id = -1;
         this.country = toCopy.country;
         this.city = toCopy.city;
         this.street = toCopy.street;
         this.number = toCopy.number;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCountry() {
