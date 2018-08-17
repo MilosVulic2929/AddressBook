@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Contact {
 
+    private int id = -1;
     private Person person;
     private String email;
     private String phone;
@@ -12,7 +13,10 @@ public class Contact {
     // Ako je groupId negativan ne pripada ni jednoj grupi
     private int groupId = -1;
 
-    public Contact(Person person, String email, String phone, Address address, LocalDate creationDate) {
+
+
+    public Contact(int id, Person person, String email, String phone, Address address, LocalDate creationDate) {
+        this.id = id;
         this.person = person;
         this.email = email;
         this.phone = phone;
@@ -34,6 +38,14 @@ public class Contact {
         this.email = toCopy.email;
         this.phone = toCopy.phone;
         this.creationDate = toCopy.creationDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -83,6 +95,7 @@ public class Contact {
     public LocalDate getCreationDate() {
         return creationDate;
     }
+
 
     @Override
     public String toString() {
