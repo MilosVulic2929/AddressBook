@@ -91,4 +91,21 @@ public class ContactDao extends AbstractDao<Contact> {
                 creationDate
         );
     }
+
+    // TODO INFO za (filipa)
+    // query za uzimanje podataka za pie-chart (gender statistics)
+    public int countContacts(String typeContact) throws SQLException {
+        Connection conn = DB.getInstance().connect();
+        PreparedStatement st = conn.prepareCall("SELECT COUNT(GENDER) AS broj "
+                + "FROM CONTACT "
+                + "JOIN PERSON ON PERSON.PERSON_ID = CONTACT.PERSON_ID "
+                + "WHERE GENDER = ?");
+        st.setString(1, typeContact);
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            return rs.getInt("broj");
+        }
+        conn.close();
+        return 0;
+    }
 }
