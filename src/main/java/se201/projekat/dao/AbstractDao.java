@@ -3,6 +3,7 @@ package se201.projekat.dao;
 import se201.projekat.models.Address;
 import se201.projekat.utils.DB;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,21 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
         conn.close();
     }
+
+    @Override
+    public void delete(T value) throws SQLException {
+        //TODO INFO za vulica, ovo sam samo ubacio na brzinu da vidim da li radi, promenicu da bude lakse za razumevanje
+        try{
+            int id = (int)value.getClass().getMethod("getId").invoke(value);
+            if(id > 0){
+                delete(id);
+                value.getClass().getMethod("setId", int.class).invoke(value,-1);
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e){
+            System.err.println("Value must have public getId and setId methods");
+        }
+    }
+
 
     @Override
     public final void deleteAll() {

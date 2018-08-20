@@ -5,12 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import se201.projekat.dao.AddressDao;
-import se201.projekat.dao.DaoFactory;
-import se201.projekat.dao.GroupDao;
-import se201.projekat.models.Address;
-import se201.projekat.models.Group;
+import se201.projekat.dao.*;
+import se201.projekat.models.*;
 import se201.projekat.utils.DB;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main extends Application {
 
@@ -22,8 +23,15 @@ public class Main extends Application {
         //TODO INFO za vulica: primer kako se koristi DAO
 
         AddressDao addressDao = DaoFactory.create(AddressDao.class);
-
         addressDao.deleteAll(); // ocisti celu bazu
+
+        DaoFactory.create(PersonDao.class).deleteAll();
+        DaoFactory.create(GroupDao.class).deleteAll();
+
+        ContactDao contactDao = DaoFactory.create(ContactDao.class);
+        contactDao.deleteAll();
+
+
 
         Address adr = new Address("Serbia", "Nis", "asd", "123");
         Address adr1 = new Address("Serbia", "BG", "wwwww", "3A/4");
@@ -34,21 +42,21 @@ public class Main extends Application {
         adr.setCity("Pirot");
         addressDao.update(adr);
         System.out.println(addressDao.getAll());
-        addressDao.delete(adr1.getId());
-        System.out.println(addressDao.getById(1));
+        addressDao.delete(adr1);
+        System.out.println(addressDao.getAll());
+        System.out.println("deleted: " + adr1);
 
-        GroupDao groupDao = DaoFactory.create(GroupDao.class);
-        groupDao.deleteAll();
+        Person person1 = new Person("Filip","Dimitrijevic", Gender.MALE);
+        Person person2 = new Person("Milica","Milivojevic", Gender.FEMALE);
 
-        Group group = new Group("LoL");
-        groupDao.insert(group);
-        groupDao.insert(new Group("Friends"));
-        groupDao.insert(new Group("Shroomers"));
+        Contact c1 = new Contact(person1, adr, "filipd@gmail.com", "053-234-123");
+        Contact c2 = new Contact(person2, adr1, "milicam@gmail.com", "123-123-123");
 
-        group.setName("Not LoL");
-        groupDao.update(group);
+        contactDao.insert(c1);
+        contactDao.insert(c2);
 
-        System.out.println(groupDao.getAll());
+        System.out.println(contactDao.getAll());
+
 
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

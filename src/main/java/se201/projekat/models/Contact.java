@@ -13,9 +13,7 @@ public class Contact {
     // Ako je groupId negativan ne pripada ni jednoj grupi
     private int groupId = -1;
 
-
-
-    public Contact(int id, Person person, String email, String phone, Address address, LocalDate creationDate) {
+    public Contact(int id, Person person, Address address, String email, String phone,  LocalDate creationDate) {
         this.id = id;
         this.person = person;
         this.email = email;
@@ -24,7 +22,7 @@ public class Contact {
         this.creationDate = creationDate;
     }
 
-    public Contact(Person person, String email, String phone, Address address) {
+    public Contact(Person person, Address address, String email, String phone) {
         this.person = person;
         this.email = email;
         this.phone = phone;
@@ -96,14 +94,16 @@ public class Contact {
         return creationDate;
     }
 
-
     @Override
     public String toString() {
         return "Contact{" +
-                "person='" + person + '\'' +
+                "id=" + id +
+                ", person=" + person +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address=" + address +
+                ", creationDate=" + creationDate +
+                ", groupId=" + groupId +
                 '}';
     }
 }
