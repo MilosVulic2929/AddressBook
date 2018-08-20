@@ -15,5 +15,6 @@ public interface IDao<T> {
     List<T> getAll()  throws SQLException;
     void update(T value) throws SQLException;
     void delete(int id) throws SQLException;
+    void delete(T value) throws SQLException;
     void deleteAll();
 }

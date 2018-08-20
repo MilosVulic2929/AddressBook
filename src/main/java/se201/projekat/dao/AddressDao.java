@@ -53,7 +53,7 @@ public class AddressDao extends AbstractDao<Address> {
         System.out.println("Updated rows: " + rowCount);
         conn.close();
         if (rowCount != 1)
-            throw new SQLException("Failed to address address with id " + address.getId());
+            throw new SQLException("Failed to update address with id " + address.getId());
     }
 
     @Override

@@ -30,9 +30,9 @@ public class GroupDao extends AbstractDao<Group> {
                 group.setId(id);
                 return id;
             } else
-                throw new SQLException("Couldn't insert address, generating ID failed");
+                throw new SQLException("Couldn't insert group, generating ID failed");
         } else
-            throw new SQLException("Couldn't insert address into table");
+            throw new SQLException("Couldn't insert group into table");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class GroupDao extends AbstractDao<Group> {
         System.out.println("Updated rows: " + rowCount);
         conn.close();
         if (rowCount != 1)
-            throw new SQLException("Failed to address address with id " + group.getId());
+            throw new SQLException("Failed to update group with id " + group.getId());
     }
 
 
