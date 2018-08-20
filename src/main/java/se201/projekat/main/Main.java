@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import se201.projekat.dao.AddressDao;
+import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
 import se201.projekat.dao.GroupDao;
 import se201.projekat.models.Address;

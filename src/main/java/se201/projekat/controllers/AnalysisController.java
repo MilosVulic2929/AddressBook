@@ -9,16 +9,19 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.RadioButton;
+import se201.projekat.dao.ContactDao;
+import se201.projekat.dao.DaoFactory;
 import se201.projekat.utils.PaneTransition;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("unchecked")
 public class AnalysisController implements Initializable {
 
     //TODO
-    // Dodaj funkcije na dugmice / vrednosti uzimaj iz baze / setuj name dijagrama u programu da bi mogo da ga update u runtime
+    // Data za prvi dijagram enabluj iz baze da se gettuje
 
     @FXML
     private BarChart<String, Number> barChart;
@@ -62,11 +65,17 @@ public class AnalysisController implements Initializable {
     }
 
     private void loadDataPieChartGender() {
+        ContactDao contactDao = DaoFactory.create(ContactDao.class);
         ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("Companies", 30),
-                        new PieChart.Data("Male", 45),
-                        new PieChart.Data("Female", 10));
+                null;
+        try {
+            pieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Other", contactDao.countContacts("other")),
+                    new PieChart.Data("Female", contactDao.countContacts("female")),
+                    new PieChart.Data("Male", contactDao.countContacts("male")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         pieChartGender.setTitle("Gender statistics");
         pieChartGender.setData(pieChartData);
