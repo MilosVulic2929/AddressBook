@@ -3,10 +3,11 @@ package se201.projekat.utils.sorting;
 import javafx.collections.ObservableList;
 import se201.projekat.models.Contact;
 
-public class SortByCity implements SortingStrategy{
+public class SortByEmail implements SortingStrategy{
+
     private boolean ascending;
 
-    public SortByCity(boolean ascending){
+    public SortByEmail(boolean ascending) {
         this.ascending = ascending;
     }
 
@@ -25,7 +26,12 @@ public class SortByCity implements SortingStrategy{
 
     @Override
     public int compare(Contact o1, Contact o2) {
-        int comparisonValue = o1.getAddress().getCity().compareToIgnoreCase(o2.getAddress().getCity());
+        int comparisonValue = o1.getEmail().compareToIgnoreCase(o2.getEmail());
         return ascending ? comparisonValue : comparisonValue * -1;
+    }
+
+    @Override
+    public String toString() {
+        return "Sort by Email";
     }
 }

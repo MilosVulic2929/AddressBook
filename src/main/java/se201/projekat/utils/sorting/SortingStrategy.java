@@ -9,4 +9,7 @@ public interface SortingStrategy extends Comparator<Contact> {
 
     void sort(ObservableList<Contact> listToSort);
 
+    boolean isAscending();
+    void setAscending(boolean ascending);
+
 }

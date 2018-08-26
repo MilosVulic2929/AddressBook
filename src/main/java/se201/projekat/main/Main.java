@@ -18,8 +18,6 @@ public class Main extends Application {
 
 
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../FirstView.fxml"));
-
 
         //TODO INFO za vulica: primer kako se koristi DAO
 
@@ -58,10 +56,14 @@ public class Main extends Application {
 
         System.out.println(contactDao.getAll());
 
+        Parent root = FXMLLoader.load(getClass().getResource("../MainView.fxml"));
 
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            System.out.println("Closing boi!");
+        });
     }
 
     public static void main(String[] args) {

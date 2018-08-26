@@ -29,4 +29,9 @@ public class SortByLastName implements SortingStrategy{
         int comparisonValue = o1.getPerson().getLastName().compareToIgnoreCase(o2.getPerson().getLastName());
         return ascending ? comparisonValue : comparisonValue * -1;
     }
+
+    @Override
+    public String toString() {
+        return "Sort by Lastname";
+    }
 }

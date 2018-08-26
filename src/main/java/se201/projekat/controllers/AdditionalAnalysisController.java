@@ -18,9 +18,8 @@ public class AdditionalAnalysisController {
     }
 
     public void handleHomeBtn(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent, "../FirstView.fxml");
+        PaneTransition.getInstance().transition(actionEvent, "../MainView.fxml");
     }
 
-    public void handleAddressBook(ActionEvent actionEvent) {
-    }
+
 }

@@ -82,7 +82,7 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleHome(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent,"../FirstView.fxml");
+        PaneTransition.getInstance().transition(actionEvent,"../MainView.fxml");
     }
 
     private void toggle(RadioButton first, RadioButton second) {
