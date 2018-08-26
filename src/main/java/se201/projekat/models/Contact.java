@@ -96,14 +96,7 @@ public class Contact {
 
     @Override
     public String toString() {
-        return "Contact{" +
-                "id=" + id +
-                ", person=" + person +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address=" + address +
-                ", creationDate=" + creationDate +
-                ", groupId=" + groupId +
-                '}';
+        return person.getFirstName() + " " + person.getLastName()
+                + ", " + email;
     }
 }

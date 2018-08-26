@@ -28,4 +28,9 @@ public class SortByCity implements SortingStrategy{
         int comparisonValue = o1.getAddress().getCity().compareToIgnoreCase(o2.getAddress().getCity());
         return ascending ? comparisonValue : comparisonValue * -1;
     }
+
+    @Override
+    public String toString() {
+        return "Sort by City";
+    }
 }

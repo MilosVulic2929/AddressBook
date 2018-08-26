@@ -29,4 +29,9 @@ public class SortByCountry implements SortingStrategy{
         int comparisonValue = o1.getAddress().getCountry().compareToIgnoreCase(o2.getAddress().getCountry());
         return ascending ? comparisonValue : comparisonValue * -1;
     }
+
+    @Override
+    public String toString() {
+        return "Sort by Country";
+    }
 }

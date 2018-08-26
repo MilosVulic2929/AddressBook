@@ -20,6 +20,5 @@
       <DatePicker fx:id="dataPicker" layoutX="67.0" layoutY="376.0" onAction="#handleDataPicker" prefHeight="20.0" prefWidth="174.0" />
       <Button layoutX="279.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleBackBtn" prefHeight="25.0" prefWidth="96.0" text="Back" />
       <Button layoutX="415.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleHomeBtn" prefHeight="25.0" prefWidth="96.0" text="Home" />
-      <Button layoutX="549.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleAddressBook" prefHeight="25.0" prefWidth="96.0" text="AddressBook" />
    </children>
 </AnchorPane>
