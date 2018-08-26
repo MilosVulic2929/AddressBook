@@ -66,8 +66,7 @@ public class AnalysisController implements Initializable {
 
     private void loadDataPieChartGender() {
         ContactDao contactDao = DaoFactory.create(ContactDao.class);
-        ObservableList<PieChart.Data> pieChartData =
-                null;
+        ObservableList<PieChart.Data> pieChartData = null;
         try {
             pieChartData = FXCollections.observableArrayList(
                     new PieChart.Data("Other", contactDao.countContacts("other")),
@@ -94,13 +93,13 @@ public class AnalysisController implements Initializable {
         }
     }
 
-    public void handleCountryRadio(ActionEvent actionEvent) {
+    public void handleCountryRadio() {
         toggle(radioCountryBtn, radioContactBtn);
         barChart.getData().clear();
         loadDataBarChartCountries();
     }
 
-    public void handleContactRadio(ActionEvent actionEvent) {
+    public void handleContactRadio() {
         toggle(radioContactBtn, radioCountryBtn);
         barChart.getData().clear();
         loadDataBarChartContacts();

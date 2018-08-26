@@ -1,13 +1,10 @@
 package se201.projekat.dao;
 
-import se201.projekat.models.Address;
 import se201.projekat.models.Gender;
 import se201.projekat.models.Person;
 import se201.projekat.utils.DB;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TODO da se implementira insert/update

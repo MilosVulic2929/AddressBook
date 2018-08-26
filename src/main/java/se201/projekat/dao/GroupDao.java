@@ -4,7 +4,6 @@ import se201.projekat.models.Group;
 import se201.projekat.utils.DB;
 
 import java.sql.*;
-import java.util.List;
 
 /**
  * TODO da se implementira insert/update
