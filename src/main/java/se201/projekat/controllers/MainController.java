@@ -124,9 +124,7 @@ public class MainController implements Initializable {
         comboSort.getItems().addAll(
                 new SortByFirstName(false),
                 new SortByLastName(false),
-                new SortByEmail(false),
-                new SortByCountry(false),
-                new SortByCity(false)
+                new SortByEmail(false)
         );
 
         comboAscending.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
