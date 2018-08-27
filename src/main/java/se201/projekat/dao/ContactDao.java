@@ -6,7 +6,6 @@ import se201.projekat.models.Person;
 import se201.projekat.utils.DB;
 
 import java.sql.*;
-import java.time.Instant;
 import java.time.LocalDate;
 
 /**
@@ -66,9 +65,9 @@ public class ContactDao extends AbstractDao<Contact> {
         int rowCount = stmt.executeUpdate();
 
         // Updatujemo ovo samo ako je sacuvano vec u bazu
-        if(contact.getPerson().getId() > 0)
+        if (contact.getPerson().getId() > 0)
             DaoFactory.create(PersonDao.class).update(contact.getPerson());
-        if(contact.getAddress().getId() > 0)
+        if (contact.getAddress().getId() > 0)
             DaoFactory.create(AddressDao.class).update(contact.getAddress());
 
         System.out.println("Updated rows: " + rowCount);
@@ -108,4 +107,22 @@ public class ContactDao extends AbstractDao<Contact> {
         conn.close();
         return 0;
     }
+
+    // TODO INFO za (filipa)
+    // query za uzimanje podataka za line-chart (dodavanje kontakta na mesecnom nivou)
+    public int countContactsPerMounth(String godina, String mesec) throws SQLException {
+        Connection conn = DB.getInstance().connect();
+        PreparedStatement st = conn.prepareCall("SELECT COUNT(CREATION_DATE) AS broj "
+                + "FROM CONTACT "
+                + "WHERE YEAR(CREATION_DATE) = ? AND MONTH(CREATION_DATE) = ?");
+        st.setString(1, godina);
+        st.setString(2, mesec);
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            return rs.getInt("broj");
+        }
+        conn.close();
+        return 0;
+    }
+
 }

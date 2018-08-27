@@ -1,6 +1,5 @@
 package se201.projekat.dao;
 
-import se201.projekat.models.Address;
 import se201.projekat.utils.DB;
 
 import java.lang.reflect.InvocationTargetException;
