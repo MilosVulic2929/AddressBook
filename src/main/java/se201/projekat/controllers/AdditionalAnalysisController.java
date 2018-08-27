@@ -6,9 +6,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
+import se201.projekat.utils.FX;
 import se201.projekat.utils.PaneTransition;
 
 import java.net.URL;
@@ -59,6 +61,10 @@ public class AdditionalAnalysisController implements Initializable {
                 series.getData().add(new XYChart.Data(createArrayOfMonths()[i], contactDao.countContactsPerMounth(String.valueOf(date.getYear()), String.valueOf(i))));
             } catch (SQLException e) {
                 e.printStackTrace();
+                //TODO INFO ZA VULICA, gde ima try-catch i ta sranja dodaj ovako da im izadje alertic
+                FX.createAlert(Alert.AlertType.ERROR, "Database Access Error " + e.getErrorCode(), "Couldn't load data",
+                        "System will exit now!").showAndWait();
+                System.exit(1);
             }
         }
         barChart.getData().addAll(series);

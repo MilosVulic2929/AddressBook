@@ -54,8 +54,7 @@ public class NewContactController implements Initializable {
      *
      * @param event
      */
-    @FXML
-    private void onBack(ActionEvent event) {
+    public void onBack(ActionEvent event){
         // Ako se stavi hide ostaje window u pozadini bolje je ovako jer se onda close
         Window window = ((Node) (event.getSource())).getScene().getWindow();
         window.fireEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSE_REQUEST));
@@ -67,11 +66,9 @@ public class NewContactController implements Initializable {
      *
      * @param event
      */
-    @FXML
-    private void onSave(ActionEvent event) {
-        System.out.println("Save");
-        if (isInputValid()) {
-            System.out.println("Uso sam gde treba");
+    public void onSave(ActionEvent event){
+        if(isInputValid()){
+          
             String firstName = textFirstName.getText();
             String lastName = textLastName.getText();
             Gender gender = comboGender.getValue();
@@ -88,15 +85,14 @@ public class NewContactController implements Initializable {
                 for (Contact c : allContacts) {
                     if (c.getPerson().getFirstName().equals(firstName) && c.getPerson().getLastName().equals(lastName)) {
                         FX.createAlert(Alert.AlertType.INFORMATION, "Duplicate Entry", "Duplicate entry",
-                                "Contact with same first name and last name already exists");
+                                "Contact with same first name and last name already exists").showAndWait();
                         return;
                     } else if (c.getEmail().equals(email)) {
                         FX.createAlert(Alert.AlertType.INFORMATION, "Duplicate Entry", "Duplicate entry",
-                                "Contact with same email already exists");
+                                "Contact with same email already exists").showAndWait();
                         return;
                     }
                 }
-                System.out.println("No duplicates");
 
                 Contact newContact = new Contact(
                         new Person(firstName, lastName, gender),
@@ -104,23 +100,21 @@ public class NewContactController implements Initializable {
                         email,
                         phone);
                 contactDao.insert(newContact);
-                Window window = ((Node) (event.getSource())).getScene().getWindow();
+                Window window =  ((Node) (event.getSource())).getScene().getWindow();
                 window.fireEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSE_REQUEST));
             } catch (SQLException e) {
                 FX.createAlert(Alert.AlertType.ERROR, "Database Error " + e.getErrorCode(), "Couldn't save new contact!",
-                        "Please try again");
+                        e.getMessage()).showAndWait();
             }
         } else {
-            System.out.println("Uso sam gde ne treba");
-            FX.createAlert(Alert.AlertType.INFORMATION, "Invalid input", "All fields must be valid", "");
+            FX.createAlert(Alert.AlertType.INFORMATION, "Invalid input", "All fields must be valid", "").showAndWait();
         }
     }
 
     private String str;
     private boolean firstClick;
 
-    @FXML
-    private void handleEmailExtension() {
+    public void handleEmailExtension(){
         //TODO za vulica info ima bug, ako promeni sa other na neki drugi, umesto da doda na kraj ono doda na pocetak
         if (!firstClick || textEmail.getText().length() == 0 || !textEmail.getText().contains(str)) {
             System.out.println("ovde");
