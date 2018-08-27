@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
@@ -15,6 +16,7 @@ import se201.projekat.utils.PaneTransition;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("unchecked")
@@ -36,6 +38,20 @@ public class AnalysisController implements Initializable {
     private RadioButton radioContactBtn;
 
 
+    ContactDao contactDao = DaoFactory.create(ContactDao.class);
+    private List<String> listaImenaGrupa;
+    private List<Integer> listaBrojaClanova;
+
+    {
+        try {
+            listaImenaGrupa = contactDao.countGroupNames();
+            listaBrojaClanova = contactDao.countGroupMembers();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         radioCountryBtn.setSelected(true);
@@ -47,25 +63,44 @@ public class AnalysisController implements Initializable {
 
         XYChart.Series<String, Number> series = new XYChart.Series();
         series.setName("Countries");
-        series.getData().add(new XYChart.Data("Item 1", 1800.58));
-        series.getData().add(new XYChart.Data("Item 2", 4300.40));
-        series.getData().add(new XYChart.Data("Item 3", 2500.50));
-        series.getData().add(new XYChart.Data("Item 5", 3450.89));
+        try {
+            for (int i = 0; i < contactDao.countCountryNames().size() && i < 4; i++) {
+                series.getData().add(new XYChart.Data(contactDao.countCountryNames().get(i), contactDao.countCountryAddresses().get(i)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         barChart.getData().add(series);
     }
 
-    private void loadDataBarChartContacts() {
+    private void modifyGroupList() {
+        try {
+            if (listaImenaGrupa.size() == 4) {
+                if (listaBrojaClanova.get(3) < contactDao.countNoGroupsMembers()) {
+                    listaImenaGrupa.set(3, "Bez grupe");
+                    listaBrojaClanova.set(3, contactDao.countNoGroupsMembers());
+                }
+            } else {
+                listaImenaGrupa.add("Bez grupe");
+                listaBrojaClanova.add(contactDao.countNoGroupsMembers());
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadDataBarChartContacts() {
+        modifyGroupList();
         XYChart.Series<String, Number> series = new XYChart.Series();
-        series.setName("Contact type");
-        series.getData().add(new XYChart.Data("Item 1", 1800.58));
-        series.getData().add(new XYChart.Data("Item 2", 4300.40));
-        series.getData().add(new XYChart.Data("Item 3", 2500.50));
+        series.setName("Group names");
+        for (int i = 0; i < listaImenaGrupa.size() && i < 4; i++) {
+            series.getData().add(new XYChart.Data(listaImenaGrupa.get(i), listaBrojaClanova.get(i)));
+        }
         barChart.getData().add(series);
     }
 
     private void loadDataPieChartGender() {
-        ContactDao contactDao = DaoFactory.create(ContactDao.class);
         ObservableList<PieChart.Data> pieChartData = null;
         try {
             pieChartData = FXCollections.observableArrayList(
@@ -81,7 +116,7 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleHome(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent,"../MainView.fxml");
+        PaneTransition.getInstance().transition(actionEvent, "../MainView.fxml");
     }
 
     private void toggle(RadioButton first, RadioButton second) {
@@ -106,6 +141,6 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleMoreAnalysis(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent,"../AdditionalAnalysis.fxml");
+        PaneTransition.getInstance().transition(actionEvent, "../AdditionalAnalysis.fxml");
     }
 }
