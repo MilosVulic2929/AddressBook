@@ -9,7 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 
 /**
- * TODO da se implementira insert/update/convert
+ *
  */
 public class ContactDao extends AbstractDao<Contact> {
 
