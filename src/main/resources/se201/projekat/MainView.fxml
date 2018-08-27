@@ -55,12 +55,12 @@
    <bottom>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnNew" mnemonicParsing="false" onAction="#setOnNewContact" prefWidth="60.0" text="New" />
-            <Button fx:id="btnEdit" disable="true" mnemonicParsing="false" onAction="#setOnEditContact" prefWidth="60.0" text="Edit" />
-            <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" onAction="#setOnDeleteContact" prefWidth="60.0" text="Delete" />
+            <Button fx:id="btnNew" mnemonicParsing="false" onAction="#onNewContact" prefWidth="60.0" text="New" />
+            <Button fx:id="btnEdit" disable="true" mnemonicParsing="false" onAction="#onEditContact" prefWidth="60.0" text="Edit" />
+            <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" onAction="#onDeleteContact" prefWidth="60.0" text="Delete" />
             <StackPane prefHeight="150.0" prefWidth="350.0">
                <children>
-                  <Button fx:id="btnStats" mnemonicParsing="false" onAction="#setOnCheckStatistics" prefWidth="160.0" text="Statistics" />
+                  <Button fx:id="btnStats" mnemonicParsing="false" onAction="#onCheckStatistics" prefWidth="160.0" text="Statistics" />
                </children>
             </StackPane>
          </children>
