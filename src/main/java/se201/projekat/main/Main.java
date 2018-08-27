@@ -21,7 +21,7 @@ public class Main extends Application {
 
         //TODO INFO za vulica: primer kako se koristi DAO
 
-        AddressDao addressDao = DaoFactory.create(AddressDao.class);
+       /* AddressDao addressDao = DaoFactory.create(AddressDao.class);
         addressDao.deleteAll(); // ocisti celu bazu
 
         DaoFactory.create(PersonDao.class).deleteAll();
@@ -53,9 +53,8 @@ public class Main extends Application {
 
         contactDao.insert(c1);
         contactDao.insert(c2);
-
         System.out.println(contactDao.getAll());
-
+*/
         Parent root = FXMLLoader.load(getClass().getResource("../MainView.fxml"));
 
         Scene scene = new Scene(root);

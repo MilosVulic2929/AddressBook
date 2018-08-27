@@ -7,11 +7,16 @@ import se201.projekat.utils.DB;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  */
 public class ContactDao extends AbstractDao<Contact> {
+
+    private List<Integer> listaSumaAddressa = new ArrayList<>();
+    private List<Integer> listaSumaClanova = new ArrayList<>();
 
     protected ContactDao() {
         super("contact");
@@ -92,7 +97,6 @@ public class ContactDao extends AbstractDao<Contact> {
         );
     }
 
-    // TODO INFO za (filipa)
     // query za uzimanje podataka za pie-chart (gender statistics)
     public int countContacts(String typeContact) throws SQLException {
         Connection conn = DB.getInstance().connect();
@@ -109,7 +113,6 @@ public class ContactDao extends AbstractDao<Contact> {
         return 0;
     }
 
-    // TODO INFO za (filipa)
     // query za uzimanje podataka za line-chart (dodavanje kontakta na mesecnom nivou)
     public int countContactsPerMounth(String godina, String mesec) throws SQLException {
         Connection conn = DB.getInstance().connect();
@@ -126,4 +129,73 @@ public class ContactDao extends AbstractDao<Contact> {
         return 0;
     }
 
+    // query za uzimanje podataka za bar-chart (zemlje)
+    public List<String> countCountryNames() throws SQLException {
+        List<String> listaImenaZemalja = new ArrayList<>();
+        List<Integer> listaVrednosti = new ArrayList<>();
+        Connection conn = DB.getInstance().connect();
+        PreparedStatement st = conn.prepareCall("SELECT COUNTRY AS country, count(*) AS broj "
+                + "FROM CONTACT "
+                + "JOIN ADDRESS ON CONTACT.ADDRESS_ID = ADDRESS.ADDRESS_ID "
+                + "GROUP BY COUNTRY "
+                + "ORDER BY count(*) DESC "
+                + "LIMIT 4");
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            listaImenaZemalja.add(rs.getString("country"));
+            listaVrednosti.add(rs.getInt("broj"));
+        }
+        conn.close();
+        setListuSuma(listaVrednosti);
+        return listaImenaZemalja;
+    }
+
+    public List<String> countGroupNames() throws SQLException {
+        List<String> listaImenaGrupa = new ArrayList<>();
+        List<Integer> listaVrednosti = new ArrayList<>();
+        Connection conn = DB.getInstance().connect();
+        PreparedStatement st = conn.prepareCall("SELECT GROUP_NAME AS ime, count(*) AS broj "
+                + "FROM CONTACT "
+                + "JOIN `GROUP` ON CONTACT.GROUP_ID = `GROUP`.GROUP_ID "
+                + "GROUP BY GROUP_NAME "
+                + "ORDER BY count(*) DESC "
+                + "LIMIT 4");
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            listaImenaGrupa.add(rs.getString("ime"));
+            listaVrednosti.add(rs.getInt("broj"));
+        }
+        conn.close();
+        setListuSumaClanovaGrupa(listaVrednosti);
+        return listaImenaGrupa;
+    }
+
+    // bukvalno dupla metoda ali ovde broj null vrednosti tipa da bi pokazao kolko ljudi nisu grupama
+    public int countNoGroupsMembers() throws SQLException {
+        Connection conn = DB.getInstance().connect();
+        PreparedStatement st = conn.prepareCall("SELECT count(*) AS broj "
+                + "FROM CONTACT "
+                + "WHERE GROUP_ID <=> NULL ");
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            return rs.getInt("broj");
+        }
+        conn.close();
+        return 0;
+    }
+
+
+    public List<Integer> countCountryAddresses(){
+        return this.listaSumaAddressa;
+    }
+    public List<Integer> countGroupMembers(){
+        return this.listaSumaClanova;
+    }
+
+    public void setListuSuma(List<Integer> lista){
+        this.listaSumaAddressa = lista;
+    }
+    public void setListuSumaClanovaGrupa(List<Integer> lista){
+        this.listaSumaClanova = lista;
+    }
 }
