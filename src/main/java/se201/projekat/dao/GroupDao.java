@@ -6,7 +6,7 @@ import se201.projekat.utils.DB;
 import java.sql.*;
 
 /**
- * TODO da se implementira insert/update
+ *
  */
 public class GroupDao extends AbstractDao<Group> {
 

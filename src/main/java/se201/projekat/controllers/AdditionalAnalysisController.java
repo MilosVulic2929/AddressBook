@@ -17,6 +17,7 @@ import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("All")
 public class AdditionalAnalysisController implements Initializable {
 
     @FXML
