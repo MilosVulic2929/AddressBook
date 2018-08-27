@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="431.0" prefWidth="749.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.controllers.AdditionalAnalysisController">
    <children>
-      <BarChart layoutX="35.0" layoutY="49.0" prefHeight="258.0" prefWidth="679.0">
+      <BarChart fx:id="barChart" layoutX="35.0" layoutY="49.0" prefHeight="258.0" prefWidth="679.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
