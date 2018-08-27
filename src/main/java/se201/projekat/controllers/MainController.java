@@ -67,6 +67,7 @@ public class MainController implements Initializable {
                     "Database Access Error " + e.getErrorCode(),
                     e.getMessage() + "\nSystem will exit now!",
                     Arrays.toString(e.getStackTrace()));
+            alert.showAndWait();
             System.exit(1);
         }
     }
@@ -87,13 +88,11 @@ public class MainController implements Initializable {
         btnEdit.disableProperty().bind(selected.isNull());
     }
 
-
     /**
      * Prikazuje sve informacije o kontaktu
-     * @param newValue
+     * Ovo je sad gotovo, prikazuje i datum kreiranja i sve
      */
     private void showContactInfo(Contact newValue) {
-        //TODO treba da se doda jos jedno polje da prikazuje datum kreiranja kontakta
         Font f = Font.font("Arial", FontWeight.BOLD, 16);
         VBox contactInfo = new VBox();
         contactInfo.setSpacing(10);
@@ -108,6 +107,7 @@ public class MainController implements Initializable {
         Label city = FX.createLabel("City: " + newValue.getAddress().getCity(), f);
         Label street = FX.createLabel("Street: " + newValue.getAddress().getStreet()
                 + ", " + newValue.getAddress().getNumber(), f);
+        Label creationDate = FX.createLabel("Creation Date: " + newValue.getCreationDate(), f);
         String groupName = "Group: N/A";
         if (newValue.getGroupId() > 0) {
             try {
@@ -119,8 +119,7 @@ public class MainController implements Initializable {
         Label group = FX.createLabel(groupName, f);
 
         contactInfo.getChildren().addAll(
-                firstName, lastName, gender, email,
-                phone, country, city, street, group
+                firstName, lastName, gender, email, phone, country, city, street, group, creationDate
         );
 
         root.setCenter(contactInfo);
@@ -176,19 +175,7 @@ public class MainController implements Initializable {
         stage.setScene(scene);
         stage.setTitle("New Contact");
         stage.initModality(Modality.APPLICATION_MODAL); // Da ne moze da se klikne negde drugde dok se ne zatvori
-
-        stage.setOnCloseRequest(event -> {
-            // Kad se zatvori stage ocisti trenutnu listu i opet procita sve iz baze
-            // Ovako se olaksava posao
-            addressBook.getContacts().clear();
-            try {
-                addressBook.getContacts().addAll(DaoFactory.create(ContactDao.class).getAll());
-            } catch (SQLException e) {
-                FX.createAlert(Alert.AlertType.ERROR, "Database Error " + e.getErrorCode(), "Couldn't load contacts!",
-                        "Application will exit now!");
-                System.exit(1);
-            }
-        });
+        stage.setOnCloseRequest(event -> loadContacts());
         stage.show();
 
     }
@@ -198,12 +185,33 @@ public class MainController implements Initializable {
         PaneTransition.getInstance().transition(actionEvent, "../Analysis.fxml");
     }
 
-    public void onEditContact() {
-        //TODO ostalo je samo ovo za editovanje
+    public void onEditContact() throws IOException {
         if (selected.get() != null) {
-            System.out.println("edit " + selected.get());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../EditContact.fxml"));
+            Parent root = loader.load();
+            EditContactController controller = loader.getController();
+            controller.setContact(selected.get());
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Edit Contact");
+            stage.initModality(Modality.APPLICATION_MODAL); // Da ne moze da se klikne negde drugde dok se ne zatvori
+            stage.setOnCloseRequest(event -> loadContacts());
+            stage.show();
         } else {
             System.out.println("Nothing is selected");
+        }
+    }
+
+    private void loadContacts() {
+        addressBook.getContacts().clear();
+        try {
+            addressBook.getContacts().addAll(DaoFactory.create(ContactDao.class).getAll());
+        } catch (SQLException e) {
+            FX.createAlert(Alert.AlertType.ERROR, "Database Error " + e.getErrorCode(), "Couldn't load contacts!",
+                    "Application will exit now!").showAndWait();
+
+            System.exit(1);
         }
     }
 
@@ -215,7 +223,7 @@ public class MainController implements Initializable {
                 listContacts.getSelectionModel().clearSelection();
             } catch (SQLException e) {
                 FX.createAlert(Alert.AlertType.ERROR, "Database Error " + e.getErrorCode(),
-                        "Couldn't delete contact!", "Please try again");
+                        "Couldn't delete contact!", "Please try again").showAndWait();
             }
         } else {
             System.out.println("Nothing is selected");

@@ -58,7 +58,8 @@ public class ContactDao extends AbstractDao<Contact> {
     public void update(Contact contact) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE contact SET email=?, phone=?, street=?, number=? WHERE `contact_id` = ?;");
+                "UPDATE contact SET email=?, phone=? WHERE `contact_id` = ?;");
+        //TODO info za vulica imao je ovde bug i pucao je update ali je sad fixan
         stmt.setString(1, contact.getEmail());
         stmt.setString(2, contact.getPhone());
         stmt.setInt(3, contact.getId());
