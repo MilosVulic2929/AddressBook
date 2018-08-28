@@ -12,10 +12,6 @@ public class AddressDao extends AbstractDao<Address> {
         super("address");
     }
 
-    /**
-     * @param address
-     * @return index dodeljen sacuvanoj adresi
-     */
     public int insert(Address address) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement stmt = conn.prepareStatement(
@@ -50,7 +46,6 @@ public class AddressDao extends AbstractDao<Address> {
         stmt.setString(4, address.getNumber());
         stmt.setInt(5, address.getId());
         int rowCount = stmt.executeUpdate();
-        System.out.println("Updated rows: " + rowCount);
         conn.close();
         if (rowCount != 1)
             throw new SQLException("Failed to update address with id " + address.getId());

@@ -42,7 +42,6 @@ public class GroupDao extends AbstractDao<Group> {
         stmt.setString(1, group.getName());
         stmt.setInt(2, group.getId());
         int rowCount = stmt.executeUpdate();
-        System.out.println("Updated rows: " + rowCount);
         conn.close();
         if (rowCount != 1)
             throw new SQLException("Failed to update group with id " + group.getId());

@@ -11,7 +11,6 @@ import javafx.scene.control.DatePicker;
 import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
 import se201.projekat.utils.FX;
-import se201.projekat.utils.PaneTransition;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,7 +19,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("All")
-public class AdditionalAnalysisController implements Initializable {
+public class AdditionalStatisticsController implements Initializable {
 
     @FXML
     private DatePicker dataPicker;
@@ -79,12 +78,12 @@ public class AdditionalAnalysisController implements Initializable {
     }
 
 
-    public void handleBackBtn(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent, "../Analysis.fxml");
+    public void onBack(ActionEvent actionEvent) {
+        FX.transition(actionEvent, "../Statistics.fxml");
     }
 
-    public void handleHomeBtn(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent, "../MainView.fxml");
+    public void onHome(ActionEvent actionEvent) {
+        FX.transition(actionEvent, "../MainView.fxml");
     }
 
 }

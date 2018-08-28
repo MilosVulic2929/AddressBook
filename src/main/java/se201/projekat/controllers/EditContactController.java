@@ -11,6 +11,7 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
+import se201.projekat.dao.GroupDao;
 import se201.projekat.models.*;
 import se201.projekat.utils.FX;
 import java.net.URL;
@@ -29,6 +30,9 @@ public class EditContactController implements Initializable {
     @FXML
     ComboBox<Gender> comboGender;
 
+    @FXML
+    ComboBox<Group> comboGroup;
+
     private Contact contact;
 
     @Override
@@ -42,6 +46,14 @@ public class EditContactController implements Initializable {
     private void setUpComboBoxes() {
         comboGender.getItems().addAll(Gender.values());
         comboGender.getSelectionModel().selectFirst();
+        try {
+            comboGroup.getItems().add(new Group("N/A"));
+            comboGroup.getItems().addAll(DaoFactory.create(GroupDao.class).getAll());
+            comboGroup.getSelectionModel().selectFirst();
+        } catch (SQLException e) {
+            FX.createAlert(Alert.AlertType.ERROR, "Database Error " + e.getErrorCode(), "Couldn't load groups!",
+                    e.getMessage()).showAndWait();
+        }
     }
 
     // Setuje kontakt koji se edituje
@@ -58,6 +70,12 @@ public class EditContactController implements Initializable {
         textStreetNumber.setText(contact.getAddress().getNumber());
 
         comboGender.getSelectionModel().select(contact.getPerson().getGender());
+        for(int i = 0; i < comboGroup.getItems().size(); i++){
+            if(comboGroup.getItems().get(i).getId() == contact.getGroupId()) {
+                comboGroup.getSelectionModel().select(i);
+                break;
+            }
+        }
     }
 
     public void onSave(ActionEvent event){
@@ -71,6 +89,7 @@ public class EditContactController implements Initializable {
             String city = textCity.getText();
             String street=  textStreet.getText();
             String stNumber = textStreetNumber.getText();
+            Group group = comboGroup.getValue();
 
             ContactDao contactDao = DaoFactory.create(ContactDao.class);
             try {
@@ -95,6 +114,7 @@ public class EditContactController implements Initializable {
                 contact.getAddress().setCity(city);
                 contact.getAddress().setStreet(street);
                 contact.getAddress().setNumber(stNumber);
+                contact.setGroupId(group.getId());
                 contactDao.update(contact);
 
                 Window window =  ((Node) (event.getSource())).getScene().getWindow();
@@ -106,7 +126,7 @@ public class EditContactController implements Initializable {
             }
         } else {
             FX.createAlert(Alert.AlertType.INFORMATION, "Invalid input",
-                    "All fields must be valid", "").showAndWait();
+                    "Contact must have FirstName or LastName", "").showAndWait();
         }
     }
 
@@ -117,8 +137,7 @@ public class EditContactController implements Initializable {
 
 
     private boolean isInputValid(){
-        //TODO treba da se doda osnovna validacija
-        return true;
+        return textFirstName.getLength() > 0 || textLastName.getText().length() > 0;
     }
 
 

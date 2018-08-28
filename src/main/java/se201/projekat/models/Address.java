@@ -1,6 +1,8 @@
 package se201.projekat.models;
 
-public class Address {
+import se201.projekat.dao.Entity;
+
+public class Address implements Entity {
 
     private int id;
     private String country;

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="431.0" prefWidth="749.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.controllers.AdditionalAnalysisController">
+<AnchorPane prefHeight="431.0" prefWidth="749.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se201.projekat.controllers.AdditionalStatisticsController">
    <children>
       <BarChart fx:id="barChart" layoutX="35.0" layoutY="49.0" prefHeight="258.0" prefWidth="679.0" title="Added contacts">
         <xAxis>
@@ -18,7 +18,7 @@
         </yAxis>
       </BarChart>
       <DatePicker fx:id="dataPicker" layoutX="139.0" layoutY="376.0" onAction="#handleDataPicker" prefHeight="20.0" prefWidth="174.0" promptText="01/01/2014" />
-      <Button layoutX="439.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleBackBtn" prefHeight="25.0" prefWidth="96.0" text="Back" />
-      <Button layoutX="566.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleHomeBtn" prefHeight="25.0" prefWidth="96.0" text="Home" />
+      <Button layoutX="439.0" layoutY="376.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="96.0" text="Back" />
+      <Button layoutX="566.0" layoutY="376.0" mnemonicParsing="false" onAction="#onHome" prefHeight="25.0" prefWidth="96.0" text="Home" />
    </children>
 </AnchorPane>

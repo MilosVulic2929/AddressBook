@@ -1,8 +1,10 @@
 package se201.projekat.models;
 
+import se201.projekat.dao.Entity;
+
 import java.time.LocalDate;
 
-public class Contact {
+public class Contact  implements Entity{
 
     private int id = -1;
     private Person person;
@@ -13,11 +15,21 @@ public class Contact {
     // Ako je groupId negativan ne pripada ni jednoj grupi
     private int groupId = -1;
 
-    public Contact(int id, Person person, Address address, String email, String phone,  LocalDate creationDate) {
+    public Contact(int id, Person person, Address address, String email, String phone, LocalDate creationDate) {
         this.id = id;
         this.person = person;
         this.email = email;
         this.phone = phone;
+        this.address = address;
+        this.creationDate = creationDate;
+    }
+
+    public Contact(int id, Person person, Address address, String email, String phone, int groupId, LocalDate creationDate) {
+        this.id = id;
+        this.person = person;
+        this.email = email;
+        this.phone = phone;
+        this.groupId = groupId;
         this.address = address;
         this.creationDate = creationDate;
     }
@@ -92,6 +104,21 @@ public class Contact {
 
     public LocalDate getCreationDate() {
         return creationDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contact contact = (Contact) o;
+
+        return id == contact.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 
     @Override

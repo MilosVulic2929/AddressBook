@@ -2,31 +2,22 @@ package se201.projekat.dao;
 
 import java.util.HashMap;
 
-
+/**
+ * Factory pattern
+ * Kreira odredjenu instancu IDao interfejsa na osnovu prosledjenog parametra
+ */
 public class DaoFactory {
-
-    private static final HashMap<Class<?>, IDao> instanceMap = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public static <T extends IDao> T create(Class<T> clazz) {
-        if (instanceMap.containsKey(clazz)) {
-            return (T) instanceMap.get(clazz);
-        } else if (clazz.equals(AddressDao.class)) {
-            AddressDao addressDao = new AddressDao();
-            instanceMap.put(clazz, addressDao);
-            return (T) addressDao;
+        if (clazz.equals(AddressDao.class)) {
+            return (T)new AddressDao();
         } else if (clazz.equals(GroupDao.class)) {
-            GroupDao groupDao = new GroupDao();
-            instanceMap.put(clazz, groupDao);
-            return (T) groupDao;
+            return (T) new GroupDao();
         } else if(clazz.equals(PersonDao.class)){
-            PersonDao personDao = new PersonDao();
-            instanceMap.put(clazz, personDao);
-            return (T) personDao;
+            return (T) new PersonDao();
         } else if(clazz.equals(ContactDao.class)){
-            ContactDao contactDao = new ContactDao();
-            instanceMap.put(clazz, contactDao);
-            return (T) contactDao;
+            return (T) new ContactDao();
         }
         throw new IllegalArgumentException("That argument is not supported");
     }
