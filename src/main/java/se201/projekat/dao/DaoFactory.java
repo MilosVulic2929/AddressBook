@@ -2,9 +2,7 @@ package se201.projekat.dao;
 
 import java.util.HashMap;
 
-/**
- * TODO INFO za vulica: ovde imamo Factory + Flyweight pattern, tako da imamo dosta patterna vise nam ne treba
- */
+
 public class DaoFactory {
 
     private static final HashMap<Class<?>, IDao> instanceMap = new HashMap<>();

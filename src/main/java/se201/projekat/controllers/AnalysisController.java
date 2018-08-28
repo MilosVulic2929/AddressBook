@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
@@ -21,9 +20,6 @@ import java.util.ResourceBundle;
 
 @SuppressWarnings("unchecked")
 public class AnalysisController implements Initializable {
-
-    //TODO
-    // Data za prvi dijagram enabluj iz baze da se gettuje
 
     @FXML
     private BarChart<String, Number> barChart;
@@ -57,6 +53,7 @@ public class AnalysisController implements Initializable {
         radioCountryBtn.setSelected(true);
         loadDataBarChartCountries();
         loadDataPieChartGender();
+        barChart.setTitle("Statistics by countries");
     }
 
     private void loadDataBarChartCountries() {
@@ -132,12 +129,14 @@ public class AnalysisController implements Initializable {
         toggle(radioCountryBtn, radioContactBtn);
         barChart.getData().clear();
         loadDataBarChartCountries();
+        barChart.setTitle("Statistics by countries");
     }
 
     public void handleContactRadio() {
         toggle(radioContactBtn, radioCountryBtn);
         barChart.getData().clear();
         loadDataBarChartContacts();
+        barChart.setTitle("Statistics by groups");
     }
 
     public void handleMoreAnalysis(ActionEvent actionEvent) {

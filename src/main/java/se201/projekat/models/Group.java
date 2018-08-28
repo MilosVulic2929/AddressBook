@@ -1,6 +1,5 @@
 package se201.projekat.models;
 
-import java.util.List;
 
 public class Group {
 

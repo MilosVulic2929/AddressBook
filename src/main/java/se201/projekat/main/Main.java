@@ -19,7 +19,6 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
 
-        //TODO INFO za vulica: primer kako se koristi DAO
 
        /* AddressDao addressDao = DaoFactory.create(AddressDao.class);
         addressDao.deleteAll(); // ocisti celu bazu
