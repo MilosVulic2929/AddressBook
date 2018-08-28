@@ -6,9 +6,7 @@ import se201.projekat.utils.DB;
 
 import java.sql.*;
 
-/**
- *
- */
+
 public class PersonDao extends AbstractDao<Person>{
 
 
@@ -48,7 +46,6 @@ public class PersonDao extends AbstractDao<Person>{
         stmt.setString(3, person.getGender().toString());
         stmt.setInt(4, person.getId());
         int rowCount = stmt.executeUpdate();
-        System.out.println("Updated rows: " + rowCount);
         conn.close();
         if (rowCount != 1)
             throw new SQLException("Failed to update person with id " + person.getId());

@@ -1,7 +1,9 @@
 package se201.projekat.models;
 
 
-public class Group {
+import se201.projekat.dao.Entity;
+
+public class Group  implements Entity{
 
     private int id;
     private String name;
@@ -34,9 +36,6 @@ public class Group {
 
     @Override
     public String toString() {
-        return "Group{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

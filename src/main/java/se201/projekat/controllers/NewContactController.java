@@ -11,6 +11,7 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
+import se201.projekat.dao.GroupDao;
 import se201.projekat.models.*;
 import se201.projekat.utils.FX;
 
@@ -18,12 +19,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
-//TODO info za vulica, ovo je klasa za dodavanje novog kontakta, ovako sam nazvao jer treba da imamo i NewGroupController
-// Nisam brisao fajlove stare, ali ovde je ubacena tvoja ekstenzija mislim da izgleda dobro
 public class NewContactController implements Initializable {
 
     @FXML
@@ -34,6 +31,9 @@ public class NewContactController implements Initializable {
 
     @FXML
     ComboBox<Gender> comboGender;
+
+    @FXML
+    ComboBox<Group> comboGroup;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,14 +47,20 @@ public class NewContactController implements Initializable {
         comboEmailExt.getItems().addAll(EmailExtension.values());
         comboGender.getItems().addAll(Gender.values());
         comboGender.getSelectionModel().selectFirst();
+        try {
+            comboGroup.getItems().add(new Group("N/A"));
+            comboGroup.getItems().addAll(DaoFactory.create(GroupDao.class).getAll());
+            comboGroup.getSelectionModel().selectFirst();
+        } catch (SQLException e) {
+            FX.createAlert(Alert.AlertType.ERROR, "Database Error " + e.getErrorCode(), "Couldn't load groups!",
+                    e.getMessage()).showAndWait();
+        }
     }
 
     /**
      * Zatvara stage
-     *
-     * @param event
      */
-    public void onBack(ActionEvent event){
+    public void onBack(ActionEvent event) {
         // Ako se stavi hide ostaje window u pozadini bolje je ovako jer se onda close
         Window window = ((Node) (event.getSource())).getScene().getWindow();
         window.fireEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSE_REQUEST));
@@ -63,12 +69,9 @@ public class NewContactController implements Initializable {
     /**
      * Proverava validnost i da li postoji isti u bazi(Ista kombinacija imena i prezimena, ili isti email),
      * ako je sve ok sacuva u bazu i zatvara stage
-     *
-     * @param event
      */
-    public void onSave(ActionEvent event){
-        if(isInputValid()){
-          
+    public void onSave(ActionEvent event) {
+        if (isInputValid()) {
             String firstName = textFirstName.getText();
             String lastName = textLastName.getText();
             Gender gender = comboGender.getValue();
@@ -93,29 +96,33 @@ public class NewContactController implements Initializable {
                         return;
                     }
                 }
-
                 Contact newContact = new Contact(
                         new Person(firstName, lastName, gender),
                         new Address(country, city, street, stNumber),
                         email,
                         phone);
+                newContact.setGroupId(comboGroup.getValue().getId());
+
                 contactDao.insert(newContact);
-                Window window =  ((Node) (event.getSource())).getScene().getWindow();
+                Window window = ((Node) (event.getSource())).getScene().getWindow();
                 window.fireEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSE_REQUEST));
             } catch (SQLException e) {
                 FX.createAlert(Alert.AlertType.ERROR, "Database Error " + e.getErrorCode(), "Couldn't save new contact!",
                         e.getMessage()).showAndWait();
             }
         } else {
-            FX.createAlert(Alert.AlertType.INFORMATION, "Invalid input", "All fields must be valid", "").showAndWait();
+            FX.createAlert(Alert.AlertType.INFORMATION, "Invalid input",
+                    "Contact must have FirstName or LastName", "").showAndWait();
         }
     }
 
     private String str;
     private boolean firstClick;
 
-    // metoda koja dodaje extenziju mejla oblika @gmail.com ili nesto slicno tome, u zavisnosti od toga sta je korisnik odabraou  comboBoxu
-    public void handleEmailExtension(){
+    /**
+     * metoda koja dodaje extenziju mejla oblika @gmail.com ili nesto slicno tome, u zavisnosti od toga sta je korisnik odabraou  comboBoxu
+     */
+    public void handleEmailExtension() {
         if (!firstClick || textEmail.getText().length() == 0 || !textEmail.getText().contains(str)) {
             textEmail.appendText(comboEmailExt.getValue().getName());
             firstClick = true;
@@ -129,8 +136,9 @@ public class NewContactController implements Initializable {
         }
     }
 
-    // pomocne metode koje odredjuju indexe pocetka i kraja u datom stringu
-    // ove metode su pomocne metode handleEmailExtension() metode
+    /**
+     * pomocne metode koje odredjuju indexe pocetka i kraja u datom stringu
+     */
     private int startPosition(String sentence, String word) {
         return sentence.indexOf(word);
     }
@@ -142,34 +150,9 @@ public class NewContactController implements Initializable {
 
     /**
      * Metoda za koja vraca true ako su sva polja validno popunjena a false ako nisu
-     *
-     * @return
      */
     private boolean isInputValid() {
-        Pattern emailPattern = Pattern.compile("^.+@.+\\..+$");
-        Pattern namePattern = Pattern.compile("^[a-zA-Z\\s]+");
-        Pattern numberPattern = Pattern.compile("\\d+");
-
-        Matcher emailMatcher = emailPattern.matcher(textEmail.getText());
-        Matcher nameMatcher = namePattern.matcher(textFirstName.getText());
-        Matcher lastNameMatcher = namePattern.matcher(textLastName.getText());
-        Matcher numberMatcher = numberPattern.matcher(textPhone.getText());
-        Matcher streetNumberMatcher = numberPattern.matcher(textStreetNumber.getText());
-
-        if (emailMatcher.matches() && nameMatcher.matches() && lastNameMatcher.matches() && dataLengthValidator(textCountry.getText(), 4)
-                && !comboGender.getValue().equals("") && numberMatcher.matches() && streetNumberMatcher.matches() && dataLengthValidator(textCity.getText(), 2)
-                && dataLengthValidator(textStreet.getText(), 2)) {
-            return true;
-        }
-        return false;
+        return textFirstName.getLength() > 0 || textLastName.getText().length() > 0;
     }
 
-    // Pomocna metoda koja se koristi u metodi isInputValid(), prima 2 parametra, prvi je string input a drugi je minimalna duzina
-    // U zavisnosti od toga, ova metoda vraca true ili false
-    private boolean dataLengthValidator(String podatak, int condition) {
-        if (podatak.length() < condition) {
-            return false;
-        }
-        return true;
-    }
 }

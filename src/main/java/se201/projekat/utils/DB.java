@@ -2,12 +2,11 @@ package se201.projekat.utils;
 
 import java.sql.*;
 
+/**
+ * Singleton Pattern jer uvek imamo jednu konekciju
+ * Osnovna konekcija sa bazom i kreiranje tabela
+ */
 public class DB {
-
-    /*
-        Uradjena osvnovna konekcija, necemo da koristimo nepredne metode
-        Singleton pattern
-     */
 
     private static DB INSTANCE;
 
@@ -28,7 +27,6 @@ public class DB {
             createTable(GROUP_TABLE_SQL);
             createTable(PERSON_TABLE_SQL);
             createTable(ADDRESS_TABLE_SQL);
-            // CONTACT mora zadnji da se kreira jer ima foreign key na ostale tabele
             createTable(CONTACT_TABLE_SQL);
         } catch (ClassNotFoundException ex) {
             System.err.println("Driver not found:" + ex.getMessage());

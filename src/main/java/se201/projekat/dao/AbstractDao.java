@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Apstraktna klasa gde je sve sto se ponavlja izvuceno
- * @param <T>
+ * Apstraktna Dao klasa koja implementira IDao, ima implementirane metode koje se ponavljaju za sve klase
  */
-public abstract class AbstractDao<T> implements IDao<T> {
+public abstract class AbstractDao<T extends Entity> implements IDao<T> {
 
     private final String tableName;
 
@@ -19,6 +18,9 @@ public abstract class AbstractDao<T> implements IDao<T> {
         this.tableName = tableName;
     }
 
+    /**
+     * Nalazi entitet na osnovu id-ija
+     */
     @Override
     public T getById(int id) throws SQLException {
         Connection conn = DB.getInstance().connect();
@@ -32,6 +34,10 @@ public abstract class AbstractDao<T> implements IDao<T> {
             throw new SQLException("Entity with id " + id + " doesn't exist");
     }
 
+    /**
+     *
+     * Ucitava sve entitete iz baze
+     */
     @Override
     public final List<T> getAll() throws SQLException {
         Connection conn = DB.getInstance().connect();
@@ -45,33 +51,37 @@ public abstract class AbstractDao<T> implements IDao<T> {
         return tableData;
     }
 
+
+    /**
+     * Brise entitet sa prosledjenim id-ijem
+     */
     @Override
     public void delete(int id) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM `"+tableName+"` WHERE `"+tableName+"`."+tableName+"_id=?;");
         stmt.setInt(1, id);
         int rowCount = stmt.executeUpdate();
-        System.out.println("Deleted rows: " + rowCount);
         if (rowCount != 1) {
             throw new SQLException("Failed to delete address with id " + id);
         }
         conn.close();
     }
 
+    /**
+     * Brise prosledjeni entitet i setuje mu id na -1
+     */
     @Override
     public void delete(T value) throws SQLException {
-        try{
-            int id = (int)value.getClass().getMethod("getId").invoke(value);
-            if(id > 0){
-                delete(id);
-                value.getClass().getMethod("setId", int.class).invoke(value,-1);
-            }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e){
-            System.err.println("Value must have public getId and setId methods");
+        if(value.getId() > 0){
+            delete(value.getId());
+            value.setId(-1);
         }
     }
 
 
+    /**
+     * Brise celu tabelu
+     */
     @Override
     public final void deleteAll() {
         try (Connection conn = DB.getInstance().connect()) {
@@ -84,5 +94,8 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
+    /**
+     * Metoda koju implementiraju druge klase, pretvara red u tabeli u entitet
+     */
     protected abstract T convertFromRow(ResultSet row) throws SQLException;
 }

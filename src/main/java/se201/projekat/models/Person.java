@@ -1,6 +1,8 @@
 package se201.projekat.models;
 
-public class Person {
+import se201.projekat.dao.Entity;
+
+public class Person implements Entity {
 
     private int id;
     private String firstName;

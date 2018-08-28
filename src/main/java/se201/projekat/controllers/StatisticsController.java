@@ -11,7 +11,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.RadioButton;
 import se201.projekat.dao.ContactDao;
 import se201.projekat.dao.DaoFactory;
-import se201.projekat.utils.PaneTransition;
+import se201.projekat.utils.FX;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("unchecked")
-public class AnalysisController implements Initializable {
+public class StatisticsController implements Initializable {
 
     @FXML
     private BarChart<String, Number> barChart;
@@ -28,29 +28,28 @@ public class AnalysisController implements Initializable {
     private PieChart pieChartGender;
 
     @FXML
-    private RadioButton radioCountryBtn;
+    private RadioButton radioBtnCountry;
 
     @FXML
-    private RadioButton radioContactBtn;
+    private RadioButton radioBtnContact;
 
 
-    ContactDao contactDao = DaoFactory.create(ContactDao.class);
-    private List<String> listaImenaGrupa;
-    private List<Integer> listaBrojaClanova;
+    private ContactDao contactDao = DaoFactory.create(ContactDao.class);
+    private List<String> listGroupNames;
+    private List<Integer> listGroupMemberCount;
 
-    {
+    public StatisticsController() {
         try {
-            listaImenaGrupa = contactDao.countGroupNames();
-            listaBrojaClanova = contactDao.countGroupMembers();
+            listGroupNames = contactDao.countGroupNames();
+            listGroupMemberCount = contactDao.countGroupMembers();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        radioCountryBtn.setSelected(true);
+        radioBtnCountry.setSelected(true);
         loadDataBarChartCountries();
         loadDataPieChartGender();
         barChart.setTitle("Statistics by countries");
@@ -72,14 +71,14 @@ public class AnalysisController implements Initializable {
 
     private void modifyGroupList() {
         try {
-            if (listaImenaGrupa.size() == 4) {
-                if (listaBrojaClanova.get(3) < contactDao.countNoGroupsMembers()) {
-                    listaImenaGrupa.set(3, "Bez grupe");
-                    listaBrojaClanova.set(3, contactDao.countNoGroupsMembers());
+            if (listGroupNames.size() == 4) {
+                if (listGroupMemberCount.get(3) < contactDao.countNoGroupsMembers()) {
+                    listGroupNames.set(3, "Bez grupe");
+                    listGroupMemberCount.set(3, contactDao.countNoGroupsMembers());
                 }
             } else {
-                listaImenaGrupa.add("Bez grupe");
-                listaBrojaClanova.add(contactDao.countNoGroupsMembers());
+                listGroupNames.add("Bez grupe");
+                listGroupMemberCount.add(contactDao.countNoGroupsMembers());
             }
 
         } catch (SQLException e) {
@@ -91,8 +90,8 @@ public class AnalysisController implements Initializable {
         modifyGroupList();
         XYChart.Series<String, Number> series = new XYChart.Series();
         series.setName("Group names");
-        for (int i = 0; i < listaImenaGrupa.size() && i < 4; i++) {
-            series.getData().add(new XYChart.Data(listaImenaGrupa.get(i), listaBrojaClanova.get(i)));
+        for (int i = 0; i < listGroupNames.size() && i < 4; i++) {
+            series.getData().add(new XYChart.Data(listGroupNames.get(i), listGroupMemberCount.get(i)));
         }
         barChart.getData().add(series);
     }
@@ -112,8 +111,8 @@ public class AnalysisController implements Initializable {
         pieChartGender.setData(pieChartData);
     }
 
-    public void handleHome(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent, "../MainView.fxml");
+    public void onHome(ActionEvent actionEvent) {
+        FX.transition(actionEvent, "../MainView.fxml");
     }
 
     private void toggle(RadioButton first, RadioButton second) {
@@ -126,20 +125,20 @@ public class AnalysisController implements Initializable {
     }
 
     public void handleCountryRadio() {
-        toggle(radioCountryBtn, radioContactBtn);
+        toggle(radioBtnCountry, radioBtnContact);
         barChart.getData().clear();
         loadDataBarChartCountries();
         barChart.setTitle("Statistics by countries");
     }
 
     public void handleContactRadio() {
-        toggle(radioContactBtn, radioCountryBtn);
+        toggle(radioBtnContact, radioBtnCountry);
         barChart.getData().clear();
         loadDataBarChartContacts();
         barChart.setTitle("Statistics by groups");
     }
 
-    public void handleMoreAnalysis(ActionEvent actionEvent) {
-        PaneTransition.getInstance().transition(actionEvent, "../AdditionalAnalysis.fxml");
+    public void onMoreStatistics(ActionEvent actionEvent) {
+        FX.transition(actionEvent, "../AdditionalStatistics.fxml");
     }
 }

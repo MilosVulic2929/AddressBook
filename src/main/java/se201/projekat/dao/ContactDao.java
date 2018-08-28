@@ -26,24 +26,27 @@ public class ContactDao extends AbstractDao<Contact> {
     public int insert(Contact contact) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO contact(person_id, address_id, email, phone, creation_date)" +
-                        "VALUES (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                "INSERT INTO contact(person_id, address_id, group_id, email, phone, creation_date)" +
+                        "VALUES (?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
         // Proverimo da li je person sacuvan u bazi, ako nije cuvamo
         if (contact.getPerson().getId() == -1) {
             DaoFactory.create(PersonDao.class).insert(contact.getPerson());
-            System.out.println("Save person first, new id " + contact.getPerson().getId());
         }
         stmt.setInt(1, contact.getPerson().getId());
 
         // Proverimo da li je address sacuvan u bazi, ako nije cuvamo
         if (contact.getAddress().getId() == -1) {
             DaoFactory.create(AddressDao.class).insert(contact.getAddress());
-            System.out.println("Save address first, new id " + contact.getAddress().getId());
         }
         stmt.setInt(2, contact.getAddress().getId());
-        stmt.setString(3, contact.getEmail());
-        stmt.setString(4, contact.getPhone());
-        stmt.setDate(5, Date.valueOf(LocalDate.now()));
+        if (contact.getGroupId() > 0) {
+            stmt.setInt(3, contact.getGroupId());
+        } else {
+            stmt.setNull(3, Types.INTEGER);
+        }
+        stmt.setString(4, contact.getEmail());
+        stmt.setString(5, contact.getPhone());
+        stmt.setDate(6, Date.valueOf(LocalDate.now()));
         int affectedRow = stmt.executeUpdate();
         if (affectedRow > 0) {
             ResultSet key = stmt.getGeneratedKeys();
@@ -63,19 +66,22 @@ public class ContactDao extends AbstractDao<Contact> {
     public void update(Contact contact) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE contact SET email=?, phone=? WHERE `contact_id` = ?;");
+                "UPDATE contact SET email=?, phone=?, group_id=? WHERE `contact_id` = ?;");
         stmt.setString(1, contact.getEmail());
         stmt.setString(2, contact.getPhone());
-        stmt.setInt(3, contact.getId());
-        int rowCount = stmt.executeUpdate();
 
+        if (contact.getGroupId() > 0) {
+            stmt.setInt(3, contact.getGroupId());
+        } else {
+            stmt.setNull(3, Types.INTEGER);
+        }
+        stmt.setInt(4, contact.getId());
+        int rowCount = stmt.executeUpdate();
         // Updatujemo ovo samo ako je sacuvano vec u bazu
         if (contact.getPerson().getId() > 0)
             DaoFactory.create(PersonDao.class).update(contact.getPerson());
         if (contact.getAddress().getId() > 0)
             DaoFactory.create(AddressDao.class).update(contact.getAddress());
-
-        System.out.println("Updated rows: " + rowCount);
         conn.close();
         if (rowCount != 1)
             throw new SQLException("Failed to update contact with id " + contact.getId());
@@ -86,17 +92,23 @@ public class ContactDao extends AbstractDao<Contact> {
         Address contactAddress = DaoFactory.create(AddressDao.class).getById(row.getInt("address_id"));
         Person contactPerson = DaoFactory.create(PersonDao.class).getById(row.getInt("person_id"));
         LocalDate creationDate = row.getDate("creation_date").toLocalDate();
+        int groupId = row.getInt("group_id");
+        if (groupId < 1)
+            groupId = -1;
         return new Contact(
-                row.getInt("person_id"),
+                row.getInt("contact_id"),// fix bug, bilo je person_id, video sam kad sam testirao
                 contactPerson,
                 contactAddress,
                 row.getString("email"),
                 row.getString("phone"),
+                groupId,
                 creationDate
         );
     }
 
-    // metoda koja vraca broj kontakta koji su odredjenog pola (male/female/other)
+    /**
+     * query za uzimanje podataka za pie-chart (gender statistics)
+     */
     public int countContacts(String typeContact) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement st = conn.prepareCall("SELECT COUNT(GENDER) AS broj "
@@ -112,7 +124,9 @@ public class ContactDao extends AbstractDao<Contact> {
         return 0;
     }
 
-    // metoda koja vraca broj kontakta koji su se kreirali tokom tog meseca tokom te godine
+    /**
+     * query za uzimanje podataka za line-chart (dodavanje kontakta na mesecnom nivou)
+     */
     public int countContactsPerMounth(String godina, String mesec) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement st = conn.prepareCall("SELECT COUNT(CREATION_DATE) AS broj "
@@ -128,7 +142,9 @@ public class ContactDao extends AbstractDao<Contact> {
         return 0;
     }
 
-    // metoda koja vraca imena zemlaj odakle je najveci broj kontakata
+    /**
+     * query za uzimanje podataka za bar-chart (zemlje)
+     */
     public List<String> countCountryNames() throws SQLException {
         List<String> listaImenaZemalja = new ArrayList<>();
         List<Integer> listaVrednosti = new ArrayList<>();
@@ -149,7 +165,6 @@ public class ContactDao extends AbstractDao<Contact> {
         return listaImenaZemalja;
     }
 
-    // metoda koja vraca imena grupa sa najvecim brojem clanova
     public List<String> countGroupNames() throws SQLException {
         List<String> listaImenaGrupa = new ArrayList<>();
         List<Integer> listaVrednosti = new ArrayList<>();
@@ -170,7 +185,7 @@ public class ContactDao extends AbstractDao<Contact> {
         return listaImenaGrupa;
     }
 
-    // Metoda koja vraca broj kontakta koji nisu ni u jednoj grupi
+
     public int countNoGroupsMembers() throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement st = conn.prepareCall("SELECT count(*) AS broj "
@@ -185,17 +200,19 @@ public class ContactDao extends AbstractDao<Contact> {
     }
 
 
-    public List<Integer> countCountryAddresses(){
+    public List<Integer> countCountryAddresses() {
         return this.listaSumaAddressa;
     }
-    public List<Integer> countGroupMembers(){
+
+    public List<Integer> countGroupMembers() {
         return this.listaSumaClanova;
     }
 
-    public void setListuSuma(List<Integer> lista){
+    private void setListuSuma(List<Integer> lista) {
         this.listaSumaAddressa = lista;
     }
-    public void setListuSumaClanovaGrupa(List<Integer> lista){
+
+    private void setListuSumaClanovaGrupa(List<Integer> lista) {
         this.listaSumaClanova = lista;
     }
 }
