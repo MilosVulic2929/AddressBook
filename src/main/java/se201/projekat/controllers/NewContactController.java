@@ -114,24 +114,23 @@ public class NewContactController implements Initializable {
     private String str;
     private boolean firstClick;
 
+    // metoda koja dodaje extenziju mejla oblika @gmail.com ili nesto slicno tome, u zavisnosti od toga sta je korisnik odabraou  comboBoxu
     public void handleEmailExtension(){
-        //TODO za vulica info ima bug, ako promeni sa other na neki drugi, umesto da doda na kraj ono doda na pocetak
         if (!firstClick || textEmail.getText().length() == 0 || !textEmail.getText().contains(str)) {
-            System.out.println("ovde");
             textEmail.appendText(comboEmailExt.getValue().getName());
             firstClick = true;
             str = comboEmailExt.getValue().getName();
         } else if (str.length() == 0) {
-            System.out.println("nja nja fix bitch");
             textEmail.appendText(comboEmailExt.getValue().getName());
             str = comboEmailExt.getValue().getName();
         } else {
-            System.out.println("ipak ovde");
             textEmail.replaceText(startPosition(textEmail.getText(), str), endPosition(textEmail.getText(), str), comboEmailExt.getValue().getName());
             str = comboEmailExt.getValue().getName();
         }
     }
 
+    // pomocne metode koje odredjuju indexe pocetka i kraja u datom stringu
+    // ove metode su pomocne metode handleEmailExtension() metode
     private int startPosition(String sentence, String word) {
         return sentence.indexOf(word);
     }
@@ -142,7 +141,7 @@ public class NewContactController implements Initializable {
     }
 
     /**
-     * Ovde moze validacija da se ubaci, trenutno uvek vraca true
+     * Metoda za koja vraca true ako su sva polja validno popunjena a false ako nisu
      *
      * @return
      */
@@ -165,6 +164,8 @@ public class NewContactController implements Initializable {
         return false;
     }
 
+    // Pomocna metoda koja se koristi u metodi isInputValid(), prima 2 parametra, prvi je string input a drugi je minimalna duzina
+    // U zavisnosti od toga, ova metoda vraca true ili false
     private boolean dataLengthValidator(String podatak, int condition) {
         if (podatak.length() < condition) {
             return false;

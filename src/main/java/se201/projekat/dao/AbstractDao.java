@@ -60,7 +60,6 @@ public abstract class AbstractDao<T> implements IDao<T> {
 
     @Override
     public void delete(T value) throws SQLException {
-        //TODO INFO za vulica, ovo sam samo ubacio na brzinu da vidim da li radi, promenicu da bude lakse za razumevanje
         try{
             int id = (int)value.getClass().getMethod("getId").invoke(value);
             if(id > 0){

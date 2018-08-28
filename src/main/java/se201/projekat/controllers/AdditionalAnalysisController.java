@@ -61,7 +61,6 @@ public class AdditionalAnalysisController implements Initializable {
                 series.getData().add(new XYChart.Data(createArrayOfMonths()[i], contactDao.countContactsPerMounth(String.valueOf(date.getYear()), String.valueOf(i))));
             } catch (SQLException e) {
                 e.printStackTrace();
-                //TODO INFO ZA VULICA, gde ima try-catch i ta sranja dodaj ovako da im izadje alertic
                 FX.createAlert(Alert.AlertType.ERROR, "Database Access Error " + e.getErrorCode(), "Couldn't load data",
                         "System will exit now!").showAndWait();
                 System.exit(1);

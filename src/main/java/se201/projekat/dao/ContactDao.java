@@ -64,7 +64,6 @@ public class ContactDao extends AbstractDao<Contact> {
         Connection conn = DB.getInstance().connect();
         PreparedStatement stmt = conn.prepareStatement(
                 "UPDATE contact SET email=?, phone=? WHERE `contact_id` = ?;");
-        //TODO info za vulica imao je ovde bug i pucao je update ali je sad fixan
         stmt.setString(1, contact.getEmail());
         stmt.setString(2, contact.getPhone());
         stmt.setInt(3, contact.getId());
@@ -97,7 +96,7 @@ public class ContactDao extends AbstractDao<Contact> {
         );
     }
 
-    // query za uzimanje podataka za pie-chart (gender statistics)
+    // metoda koja vraca broj kontakta koji su odredjenog pola (male/female/other)
     public int countContacts(String typeContact) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement st = conn.prepareCall("SELECT COUNT(GENDER) AS broj "
@@ -113,7 +112,7 @@ public class ContactDao extends AbstractDao<Contact> {
         return 0;
     }
 
-    // query za uzimanje podataka za line-chart (dodavanje kontakta na mesecnom nivou)
+    // metoda koja vraca broj kontakta koji su se kreirali tokom tog meseca tokom te godine
     public int countContactsPerMounth(String godina, String mesec) throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement st = conn.prepareCall("SELECT COUNT(CREATION_DATE) AS broj "
@@ -129,7 +128,7 @@ public class ContactDao extends AbstractDao<Contact> {
         return 0;
     }
 
-    // query za uzimanje podataka za bar-chart (zemlje)
+    // metoda koja vraca imena zemlaj odakle je najveci broj kontakata
     public List<String> countCountryNames() throws SQLException {
         List<String> listaImenaZemalja = new ArrayList<>();
         List<Integer> listaVrednosti = new ArrayList<>();
@@ -150,6 +149,7 @@ public class ContactDao extends AbstractDao<Contact> {
         return listaImenaZemalja;
     }
 
+    // metoda koja vraca imena grupa sa najvecim brojem clanova
     public List<String> countGroupNames() throws SQLException {
         List<String> listaImenaGrupa = new ArrayList<>();
         List<Integer> listaVrednosti = new ArrayList<>();
@@ -170,7 +170,7 @@ public class ContactDao extends AbstractDao<Contact> {
         return listaImenaGrupa;
     }
 
-    // bukvalno dupla metoda ali ovde broj null vrednosti tipa da bi pokazao kolko ljudi nisu grupama
+    // Metoda koja vraca broj kontakta koji nisu ni u jednoj grupi
     public int countNoGroupsMembers() throws SQLException {
         Connection conn = DB.getInstance().connect();
         PreparedStatement st = conn.prepareCall("SELECT count(*) AS broj "
